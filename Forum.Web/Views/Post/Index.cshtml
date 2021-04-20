@@ -1,0 +1,71 @@
+﻿@model Forum.Web.Models.Post.PostIndexModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Forum.Domain.Models.User> signInManager;
+
+
+<h1>@Model.Title</h1>
+
+<div>
+    Author: 
+    <a asp-controller="Profile" asp-action="Detail" asp-route-id="@Model.AuthorId">
+        @Model.AuthorName
+    </a>
+    <span>@Model.Created</span>
+</div>
+
+<div>
+    @Model.PostContent
+</div>
+
+<div class="row">
+    @if (!User.IsInRole("banned_user"))
+    {
+        <span>
+            <a asp-controller="Reply" asp-action="Create" asp-route-id="@Model.Id" class="btn">
+                Post Reply
+            </a>
+        </span>
+    }
+    @if (User.IsInRole("admin"))
+    {
+        <span>
+            <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id" class="btn">
+                Delete Post
+            </a>
+        </span>
+    }
+</div>
+
+
+@if (Model.Replies.Any())
+{
+    foreach (var reply in Model.Replies)
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@reply.AuthorId">
+                    @reply.AuthorName
+                </a>
+                <span>@reply.Created</span>
+            </div>
+            <div class="col-md-9">
+                @Html.Raw(reply.ReplyContent)
+            </div>
+            @if (User.IsInRole("admin"))
+            {
+                <div class="col-md-3">
+                    <a asp-controller="Post" asp-action="DeleteReply" asp-route-id="@Model.Id" asp-route-replyId="@reply.">
+                        Delete Reply 
+                    </a>
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <h3>
+        There are no replies to this post. <br />
+    </h3>
+}
+

@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model Forum.Web.Models.User.ProfileModel
+
+@inject UserManager<Forum.Domain.Models.User> UserManager
+
+<div class="container body-content">
+    <div class="row sectionHeader">
+        <div class="sectionHeading">
+            User Profile
+        </div>
+    </div>
+    <div class="col-md-8">
+        <span id="userName">@Model.UserName</span>
+        <span id="userEmailLabel">Email: @Model.Email</span>
+        <span id="userCreatedLabel">Member Since: @Model.MemberSince</span>
+    </div>
+    @if (User.IsInRole("admin"))
+    {
+        <div>
+            <a asp-controller="Profile" asp-action="Ban" asp-route-id="@Model.UserId">
+                Ban User
+            </a>
+        </div>
+    }
+</div>

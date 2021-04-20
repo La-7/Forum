@@ -1,0 +1,22 @@
+﻿@model Forum.Web.Models.Theme.ThemeIndexModel
+
+<h1>Themes</h1>
+
+<table class="table table-hover" id="themeIndexTable">
+    <tbody>
+        @foreach (var theme in Model.ThemeList)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Theme" asp-action="Topic" asp-route-id="@theme.Id">
+                        @theme.Name
+                    </a>
+                </td>
+                <td>
+                    @theme.Description
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
